@@ -111,6 +111,8 @@ def bootstrap(config, git_fetch=True):
             fab.run('ls -t1 ~/fab/cassandra_builds | tail -n {num_to_delete} | xargs -iXX rm -rf ~/fab/cassandra_builds/XX'.format(
                 num_to_delete=num_builds-MAX_CACHED_BUILDS))
 
+    return git_id
+
 def start(config):
     fab.puts("Starting Cassandra..")
     cmd = 'JAVA_HOME={java_home} nohup ~/fab/cassandra/bin/cassandra'.format(java_home=config['java_home'])
