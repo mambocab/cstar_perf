@@ -359,6 +359,7 @@ def destroy(leave_data=False):
     fab.run('killall -9 java', quiet=True)
     fab.run('pkill -f "python.*fincore_capture"', quiet=True)
     fab.run('rm -rf fab/cassandra')
+    fab.run('rm -rf fab/dse')
     fab.run('rm -rf fab/scripts')
     fab.run('rm -f fab/nohup.log')
     if not leave_data:

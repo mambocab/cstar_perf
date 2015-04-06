@@ -106,7 +106,7 @@ def bootstrap(cfg=None, destroy=False, leave_data=False, git_fetch=True):
     execute(common.start)
     execute(common.ensure_running, hosts=[common.config['seeds'][0]])
 
-    logger.info("Started {product} on {n} nodes with git SHA: {git_id}".format(
+    logger.info("Started {product} on {n} nodes with revision id: {git_id}".format(
         product=common.config['product'], n=len(common.fab.env['hosts']), git_id=git_id))
     time.sleep(30)
     return git_id
