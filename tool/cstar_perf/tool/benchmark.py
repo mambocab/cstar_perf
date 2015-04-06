@@ -100,15 +100,15 @@ def bootstrap(cfg=None, destroy=False, leave_data=False, git_fetch=True):
         git_ids = execute(common.bootstrap, git_fetch=git_fetch)
 
     git_id = list(set(git_ids.values()))
-    assert len(git_id) == 1, "Not all nodes had the same cassandra version: {git_ids}".format(git_ids=git_ids)
+    assert len(git_id) == 1, "Not all nodes had the same {product} version: {git_ids}".format(product=common.config['product'], git_ids=git_ids)
     git_id = git_id[0]
 
     execute(common.start)
     execute(common.ensure_running, hosts=[common.config['seeds'][0]])
-    time.sleep(30)
 
-    logger.info("Started cassandra on {n} nodes with git SHA: {git_id}".format(
-        n=len(common.fab.env['hosts']), git_id=git_id))
+    logger.info("Started {product} on {n} nodes with git SHA: {git_id}".format(
+        product=common.config['product'], n=len(common.fab.env['hosts']), git_id=git_id))
+    time.sleep(30)
     return git_id
 
 def restart():
