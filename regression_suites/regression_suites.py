@@ -6,10 +6,9 @@ CSTAR_SERVER = "cstar.datastax.com"
 
 def create_baseline_config(title=None):
     """Creates a config for testing the latest dev build(s) against stable and oldstable"""
-    
-    dev_revisions = ['apache/trunk'] + get_branches()[:2]
+
+    dev_revisions = ['pcmanus/8099_to_test', 'apache/cassandra-2.2']
     stable = get_tagged_releases('stable')[0]
-    oldstable = get_tagged_releases('oldstable')[0]
 
     config = {}
 
@@ -17,12 +16,11 @@ def create_baseline_config(title=None):
     for r in dev_revisions:
         revisions.append({'revision': r, 'label': r +' (dev)'})
     revisions.append({'revision': stable, 'label': stable+' (stable)'})
-    revisions.append({'revision': oldstable, 'label': oldstable+' (oldstable)'})
     for r in revisions:
         r['options'] = {'use_vnodes': True}
         r['java_home'] = "~/fab/jvms/jdk1.7.0_71" if 'oldstable' in r['label'] else "~/fab/jvms/jdk1.8.0_45"
 
-    config['title'] = 'Jenkins C* regression suite - {}'.format(datetime.datetime.now().strftime("%Y-%m-%d"))
+    config['title'] = 'Jenkins 8099 regression suite - {}'.format(datetime.datetime.now().strftime("%Y-%m-%d"))
 
     if title is not None:
         config['title'] += ' - {title}'.format(title=title)
@@ -129,7 +127,7 @@ def test_commitlog_sync_settings():
                       'concurrent_writes: 64'])
     test_simple_profile(title='Batch Commitlog', yaml=yaml)
 
-def number_of_columns_profile(title='Read/Write {columns}', cluster='blade_11', rows=65000000, threads=300, columns=50):
+def number_of_columns_profile(title='Read/Write {columns} Columns', cluster='blade_11', rows=65000000, threads=300, columns=50):
     config = create_baseline_config(title.format(columns=columns))
     config['cluster'] = cluster
     config['operations'] = [
