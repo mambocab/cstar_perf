@@ -7,7 +7,7 @@ CSTAR_SERVER = "cstar.datastax.com"
 def create_baseline_config(title=None):
     """Creates a config for testing the latest dev build(s) against stable and oldstable"""
 
-    dev_revisions = ['pcmanus/8099_to_test', 'apache/cassandra-2.2']
+    dev_revisions = ['pcmanus/8099', 'apache/cassandra-2.2']
     stable = get_tagged_releases('stable')[0]
 
     config = {}
