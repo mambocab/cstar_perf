@@ -1,5 +1,5 @@
 from cstar_perf.frontend.client.schedule import Scheduler
-from regression_suites.regression_suites import create_baseline_config
+from cstar_perf.regression_suites.regression_suites import create_baseline_config
 
 CSTAR_SERVER = "cstar.datastax.com"
 
