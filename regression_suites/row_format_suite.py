@@ -7,7 +7,7 @@ CSTAR_SERVER = "cstar.datastax.com"
 def create_baseline_config():
     """Creates a config for testing the latest dev build(s) against stable and oldstable"""
 
-    dev_revisions = ['apache/trunk']
+    dev_revisions = ['apache/trunk', 'apache/cassandra-2.2']
 
     config = {}
 
@@ -32,6 +32,7 @@ def test_simple_profile(cluster='blade_11', load_rows=65000000, read_rows=650000
                      '-insert row-population-ratio=FIXED\(1\)/100 '
                      '-col n=FIXED\(600\)').format(
              load_rows=load_rows, threads=threads)},
+        {'operation': 'nodetool', 'command': 'cfstats'},
         {'operation': 'stress',
          'command': 'read n={read_rows} -rate threads={threads}'.format(read_rows=read_rows, threads=threads)},
         {'operation': 'stress',
