@@ -18,7 +18,7 @@ def create_baseline_config():
         r['options'] = {'use_vnodes': True}
         r['java_home'] = "~/fab/jvms/jdk1.8.0_45"
 
-    config['title'] = 'Jenkins C* regression suite - {}'.format(datetime.datetime.now().strftime("%Y-%m-%d"))
+    config['title'] = 'Jenkins C* row format suite - {}'.format(datetime.datetime.now().strftime("%Y-%m-%d"))
 
     return config
 
