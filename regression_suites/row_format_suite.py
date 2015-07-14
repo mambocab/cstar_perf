@@ -1,7 +1,26 @@
+import datetime
 from cstar_perf.frontend.client.schedule import Scheduler
-from cstar_perf.regression_suites.regression_suites import create_baseline_config
 
 CSTAR_SERVER = "cstar.datastax.com"
+
+
+def create_baseline_config():
+    """Creates a config for testing the latest dev build(s) against stable and oldstable"""
+
+    dev_revisions = ['apache/trunk']
+
+    config = {}
+
+    config['revisions'] = revisions = []
+    for r in dev_revisions:
+        revisions.append({'revision': r, 'label': r + ' (dev)'})
+    for r in revisions:
+        r['options'] = {'use_vnodes': True}
+        r['java_home'] = "~/fab/jvms/jdk1.7.0_71"
+
+    config['title'] = 'Jenkins C* regression suite - {}'.format(datetime.datetime.now().strftime("%Y-%m-%d"))
+
+    return config
 
 
 def test_simple_profile(cluster='blade_11', load_rows=65000000, read_rows=65000000, threads=300):
