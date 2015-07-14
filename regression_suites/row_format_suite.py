@@ -38,6 +38,8 @@ def test_simple_profile(cluster='blade_11', load_rows=65000000, read_rows=650000
         {'operation': 'stress',
          'command': 'read n={read_rows} -rate threads={threads}'.format(read_rows=read_rows, threads=threads)}
     ]
+    for op in config['operations']:
+        op['stress_revision'] = 'apache/trunk'
 
     scheduler = Scheduler(CSTAR_SERVER)
     scheduler.schedule(config)
