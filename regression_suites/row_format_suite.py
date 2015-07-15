@@ -32,7 +32,6 @@ def test_on_disk_size(cluster='blade_11', load_rows='3M', read_rows='3M',
          'command': ('write n={load_rows} -rate threads={write_threads} '
                      '-insert row-population-ratio=FIXED\(1\)/100 '
                      '-col n=FIXED\(1000\)').format(load_rows=load_rows, write_threads=write_threads)},
-        {'operation': 'bash', 'command': 'sleep 30'},
         {'operation': 'nodetool', 'command': 'cfstats -H'},
     ]
     for op in config['operations']:
