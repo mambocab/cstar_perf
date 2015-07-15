@@ -23,7 +23,7 @@ def create_baseline_config():
     return config
 
 
-def test_simple_profile(cluster='blade_11', load_rows=65000000, read_rows=65000000, threads=25):
+def test_simple_profile(cluster='blade_11', load_rows='3M', read_rows='3M', threads=25):
     config = create_baseline_config()
     config['cluster'] = cluster
     config['operations'] = [
