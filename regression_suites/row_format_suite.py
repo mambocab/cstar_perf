@@ -23,20 +23,24 @@ def create_baseline_config():
     return config
 
 
-def test_simple_profile(cluster='blade_11', load_rows='3M', read_rows='3M', threads=25):
+def test_simple_profile(cluster='blade_11', load_rows='3M', read_rows='3M',
+                        write_threads=25, read_threads=10):
     config = create_baseline_config()
     config['cluster'] = cluster
     config['operations'] = [
         {'operation': 'stress',
-         'command': ('write n={load_rows} -rate threads={threads} '
+         'command': ('write n={load_rows} -rate threads={write_threads} '
                      '-insert row-population-ratio=FIXED\(1\)/100 '
-                     '-col n=FIXED\(600\)').format(
-             load_rows=load_rows, threads=threads)},
+                     '-col n=FIXED\(600\)').format(load_rows=load_rows, write_threads=write_threads)},
         {'operation': 'nodetool', 'command': 'cfstats -H'},
         {'operation': 'stress',
-         'command': 'read n={read_rows} -rate threads={threads}'.format(read_rows=read_rows, threads=threads)},
+         'command': ('read n={read_rows} '
+                     '-rate threads={read_threads}').format(read_rows=read_rows,
+                                                            read_threads=read_threads)},
         {'operation': 'stress',
-         'command': 'read n={read_rows} -rate threads={threads}'.format(read_rows=read_rows, threads=threads)}
+         'command': ('read n={read_rows} '
+                     '-rate threads={read_threads}').format(read_rows=read_rows,
+                                                            read_threads=read_threads)}
     ]
     for op in config['operations']:
         op['stress_revision'] = 'apache/trunk'
