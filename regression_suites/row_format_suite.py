@@ -33,14 +33,14 @@ def test_simple_profile(cluster='blade_11', load_rows='3M', read_rows='3M',
                      '-insert row-population-ratio=FIXED\(1\)/100 '
                      '-col n=FIXED\(600\)').format(load_rows=load_rows, write_threads=write_threads)},
         {'operation': 'nodetool', 'command': 'cfstats -H'},
-        {'operation': 'stress',
-         'command': ('read n={read_rows} '
-                     '-rate threads={read_threads}').format(read_rows=read_rows,
-                                                            read_threads=read_threads)},
-        {'operation': 'stress',
-         'command': ('read n={read_rows} '
-                     '-rate threads={read_threads}').format(read_rows=read_rows,
-                                                            read_threads=read_threads)}
+        # {'operation': 'stress',
+        #  'command': ('read n={read_rows} '
+        #              '-rate threads={read_threads}').format(read_rows=read_rows,
+        #                                                     read_threads=read_threads)},
+        # {'operation': 'stress',
+        #  'command': ('read n={read_rows} '
+        #              '-rate threads={read_threads}').format(read_rows=read_rows,
+        #                                                     read_threads=read_threads)}
     ]
     for op in config['operations']:
         op['stress_revision'] = 'apache/trunk'
