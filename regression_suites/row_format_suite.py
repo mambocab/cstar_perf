@@ -32,7 +32,7 @@ def test_simple_profile(cluster='blade_11', load_rows='3M', read_rows='3M', thre
                      '-insert row-population-ratio=FIXED\(1\)/100 '
                      '-col n=FIXED\(600\)').format(
              load_rows=load_rows, threads=threads)},
-        {'operation': 'nodetool', 'command': 'cfstats'},
+        {'operation': 'nodetool', 'command': 'cfstats -H'},
         {'operation': 'stress',
          'command': 'read n={read_rows} -rate threads={threads}'.format(read_rows=read_rows, threads=threads)},
         {'operation': 'stress',
