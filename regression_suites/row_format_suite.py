@@ -37,7 +37,7 @@ def test_on_disk_size(cluster='blade_11', load_rows='3M', read_rows='3M',
                      '-col n=FIXED\(1000\)').format(load_rows=load_rows, write_threads=write_threads)},
         {'operation': 'nodetool',
          'command': 'cfstats keyspace1.standard1 -H',
-         'nodes': 'blade-11-2a' if cluster == 'blade_11' else 'blade-11-7a'},
+         'nodes': ['blade-11-2a' if cluster == 'blade_11' else 'blade-11-7a']},
     ]
     for op in config['operations']:
         op['stress_revision'] = 'apache/trunk'
