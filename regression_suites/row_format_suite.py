@@ -59,7 +59,7 @@ def test_on_disk_size(cluster='blade_11', load_rows='3M',
     scheduler.schedule(config)
 
 
-def long_column_names(cluster='blade_11', load_rows='2M', write_threads=10):
+def long_column_names_test(cluster='blade_11', load_rows='2M', write_threads=10):
     config = create_baseline_config(title_suffix='long column names test')
     config['operations'] = [
         {'operation': 'stress',
