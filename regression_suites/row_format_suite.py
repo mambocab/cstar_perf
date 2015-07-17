@@ -64,7 +64,7 @@ def long_column_names_test(cluster='blade_11', load_rows='2M', write_threads=10)
     config['operations'] = [
         {'operation': 'stress',
          'command': ('user profile="https://github.com/mambocab/cstar_perf/blob/master/regression_suites/long_names.yaml" '
-                     'n={load_rows} ops=insert\(1\) -rate threads={write_threads} '
+                     'n={load_rows} ops\(insert=1\) -rate threads={write_threads} '
                      ).format(load_rows=load_rows, write_threads=write_threads)},
         {'operation': 'nodetool',
          'command': 'cfstats keyspace1.standard1 -H',
