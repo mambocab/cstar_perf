@@ -38,7 +38,7 @@ def create_baseline_config(cluster='blade_11', title_suffix=''):
     return config
 
 
-@skip('skipping standard test')
+# @skip('skipping standard test')
 def test_on_disk_size(cluster='blade_11', load_rows='3M',
                       write_threads=10, read_threads=10):
 
@@ -46,7 +46,7 @@ def test_on_disk_size(cluster='blade_11', load_rows='3M',
     config['operations'] = [
         {'operation': 'stress',
          'command': ('write n={load_rows} -rate threads={write_threads} '
-                     '-insert row-population-ratio=FIXED\(1\)/100 '
+                     # '-insert row-population-ratio=FIXED\(1\)/100 '
                      '-col n=FIXED\(1000\)').format(load_rows=load_rows, write_threads=write_threads)},
         {'operation': 'nodetool',
          'command': 'cfstats keyspace1.standard1 -H',
@@ -59,6 +59,7 @@ def test_on_disk_size(cluster='blade_11', load_rows='3M',
     scheduler.schedule(config)
 
 
+@skip("doesn't work yet :(")
 def long_column_names_test(cluster='blade_11', load_rows='2M', write_threads=10):
     config = create_baseline_config(title_suffix='long column names test')
     config['operations'] = [
