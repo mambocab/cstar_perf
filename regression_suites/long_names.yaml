@@ -6,7 +6,7 @@ keyspace_definition: |
 table: standard1
 
 table_definition: |
-  CREATE TABLE standard1 (
+  CREATE TABLE keyspace1.standard1 (
       ddyaaxyabjmkyccthzin bigint,
       erolgbrttldjtgecishn bigint,
       zmatbczszajlobwbonil bigint,
