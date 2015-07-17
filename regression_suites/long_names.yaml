@@ -1020,8 +1020,8 @@ table_definition: |
     default_time_to_live=0 AND
     speculative_retry='99.0PERCENTILE' AND
     memtable_flush_period_in_ms=0 AND
-    compaction={'class': 'SizeTieredCompactionStrategy'} AND
-    compression={'sstable_compression': 'LZ4Compressor'};
+    compaction={'class':'SizeTieredCompactionStrategy'} AND
+    compression={'sstable_compression':'LZ4Compressor'};
 
 queries:
     default:
