@@ -1007,7 +1007,7 @@ table_definition: |
       ycgrnzsjfndfucdyqlba text,
       zdcrgvdmbunfyklukvgz text,
       yxfkuxxksnadrokilswt long,
-      key long PRIMARY KEY (key)
+      key long PRIMARY KEY
   ) WITH
     bloom_filter_fp_chance=0.010000 AND
     caching='KEYS_ONLY' AND
