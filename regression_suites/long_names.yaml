@@ -1022,3 +1022,8 @@ table_definition: |
     memtable_flush_period_in_ms=0 AND
     compaction={'class': 'SizeTieredCompactionStrategy'} AND
     compression={'sstable_compression': 'LZ4Compressor'};
+
+queries:
+    default:
+        cql: select * from standard1 where key = ?
+        fields: samerow
