@@ -1,12 +1,12 @@
 keyspace: keyspace1
 
 keyspace_definition: |
-  CREATE KEYSPACE "keyspace1" WITH replication = { 'class': 'SimpleStrategy', 'replication_factor': '1' };
+  CREATE KEYSPACE keyspace1 WITH replication = { 'class': 'SimpleStrategy', 'replication_factor': '1' };
 
 table: standard1
 
 table_definition: |
-  CREATE TABLE "standard1" (
+  CREATE TABLE standard1 (
       ddyaaxyabjmkyccthzin long,
       erolgbrttldjtgecishn long,
       zmatbczszajlobwbonil long,
@@ -1006,7 +1006,7 @@ table_definition: |
       totpnyikdsxwngaufnid long,
       ycgrnzsjfndfucdyqlba text,
       zdcrgvdmbunfyklukvgz text,
-      yxfkuxxksnadrokilswt long ,
+      yxfkuxxksnadrokilswt long,
       key long PRIMARY KEY (key)
   ) WITH
     bloom_filter_fp_chance=0.010000 AND
