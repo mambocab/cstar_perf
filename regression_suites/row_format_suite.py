@@ -1,5 +1,5 @@
 import datetime
-from unittest import skip
+# from unittest import skip
 
 from cstar_perf.frontend.client.schedule import Scheduler
 
@@ -32,14 +32,14 @@ def create_baseline_config(cluster='blade_11', title_suffix=''):
     if title_suffix:
         config['title'] += ': ' + title_suffix
 
-    assert cluster in ('blade_11', 'blade_11b')
+    assert cluster in ('blade_11', 'blade_11_b')
     config['cluster'] = cluster
 
     return config
 
 
 # @skip('skipping standard test')
-def test_on_disk_size(cluster='blade_11b', load_rows='3M',
+def test_on_disk_size(cluster='blade_11_b', load_rows='3M',
                       write_threads=10, read_threads=10):
 
     config = create_baseline_config(cluster=cluster)
@@ -60,7 +60,7 @@ def test_on_disk_size(cluster='blade_11b', load_rows='3M',
 
 
 # @skip("doesn't work yet :(")
-def long_column_names_test(cluster='blade_11b', load_rows='2M', write_threads=10):
+def long_column_names_test(cluster='blade_11_b', load_rows='2M', write_threads=10):
     config = create_baseline_config(title_suffix='long column names test')
     config['operations'] = [
         {'operation': 'stress',
