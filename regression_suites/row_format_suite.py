@@ -61,7 +61,7 @@ def test_on_disk_size(cluster='blade_11_b', load_rows='3M',
 
 # @skip("doesn't work yet :(")
 def long_column_names_test(cluster='blade_11_b', load_rows='2M', write_threads=10):
-    config = create_baseline_config(title_suffix='long column names test')
+    config = create_baseline_config(title_suffix='long column names test', cluster=cluster)
     config['operations'] = [
         {'operation': 'stress',
          'command': ('user profile="https://raw.githubusercontent.com/mambocab/cstar_perf/row-format-tests/regression_suites/long_names.yaml" '
