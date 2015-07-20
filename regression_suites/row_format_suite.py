@@ -17,7 +17,8 @@ CSTAR_SERVER = "cstar.datastax.com"
 def create_baseline_config(cluster='blade_11', title_suffix=''):
     """Creates a config for testing the latest dev build(s) against stable and oldstable"""
 
-    dev_revisions = ['mambocab/with-JAVA-571-driver', 'apache/cassandra-2.2']
+    dev_revisions = ['apache/cassandra-2.2']
+    # dev_revisions = ['mambocab/with-JAVA-571-driver', 'apache/cassandra-2.2']
 
     config = {}
 
@@ -35,7 +36,7 @@ def create_baseline_config(cluster='blade_11', title_suffix=''):
     assert cluster in ('blade_11', 'blade_11_b')
     config['cluster'] = cluster
 
-    config['stress_revision'] = 'mambocab/with-JAVA-571-driver'
+    # config['stress_revision'] = 'mambocab/with-JAVA-571-driver'
 
     return config
 
@@ -71,8 +72,6 @@ def long_column_names_test(cluster='blade_11_b', load_rows='2M', write_threads=1
          'command': 'cfstats keyspace1.standard1 -H',
          'nodes': ['blade-11-2a' if cluster == 'blade_11' else 'blade-11-7a']},
     ]
-    for op in config['operations']:
-        op['stress_revision'] = 'apache/trunk'
 
     scheduler = Scheduler(CSTAR_SERVER)
     scheduler.schedule(config)
