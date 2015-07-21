@@ -18,7 +18,7 @@ def create_baseline_config(cluster='blade_11', title_suffix=''):
     """Creates a config for testing the latest dev build(s) against stable and oldstable"""
 
     # dev_revisions = ['apache/cassandra-2.2']
-    dev_revisions = ['mambocab/with-JAVA-571-driver', 'apache/cassandra-2.2']
+    dev_revisions = ['apache/trunk', 'apache/cassandra-2.2']
 
     config = {}
 
@@ -26,7 +26,7 @@ def create_baseline_config(cluster='blade_11', title_suffix=''):
     for r in dev_revisions:
         revisions.append({'revision': r,
                           'label': r + ' (dev)',
-                          'stress_revision': r
+                          'stress_revision': 'apache/trunk'
                           })
     for r in revisions:
         r['options'] = {'use_vnodes': True}
