@@ -1,5 +1,5 @@
 import datetime
-# from unittest import skip
+from unittest import skip
 
 from cstar_perf.frontend.client.schedule import Scheduler
 
@@ -17,14 +17,17 @@ CSTAR_SERVER = "cstar.datastax.com"
 def create_baseline_config(cluster='blade_11', title_suffix=''):
     """Creates a config for testing the latest dev build(s) against stable and oldstable"""
 
-    dev_revisions = ['apache/cassandra-2.2']
-    # dev_revisions = ['mambocab/with-JAVA-571-driver', 'apache/cassandra-2.2']
+    # dev_revisions = ['apache/cassandra-2.2']
+    dev_revisions = ['mambocab/with-JAVA-571-driver', 'apache/cassandra-2.2']
 
     config = {}
 
     config['revisions'] = revisions = []
     for r in dev_revisions:
-        revisions.append({'revision': r, 'label': r + ' (dev)'})
+        revisions.append({'revision': r,
+                          'label': r + ' (dev)',
+                          'stress_revision': r
+                          })
     for r in revisions:
         r['options'] = {'use_vnodes': True}
         r['java_home'] = "~/fab/jvms/jdk1.8.0_45"
@@ -36,12 +39,10 @@ def create_baseline_config(cluster='blade_11', title_suffix=''):
     assert cluster in ('blade_11', 'blade_11_b')
     config['cluster'] = cluster
 
-    # config['stress_revision'] = 'mambocab/with-JAVA-571-driver'
-
     return config
 
 
-# @skip('skipping standard test')
+@skip('skipping standard test')
 def test_on_disk_size(cluster='blade_11_b', load_rows='3M',
                       write_threads=10, read_threads=10):
 
