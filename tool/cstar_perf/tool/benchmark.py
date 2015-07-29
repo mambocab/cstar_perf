@@ -128,7 +128,7 @@ def bootstrap(cfg=None, destroy=False, leave_data=False, git_fetch=True):
     time.sleep(30)
 
     logger.info("Started cassandra on {n} nodes with git SHAs: {git_id_uniques}".format(n=len(cstar.fab.env['hosts']), git_id_uniques=git_id_uniques))
-    return git_id
+    return git_ids
 
 def restart():
     execute(cstar.stop)
