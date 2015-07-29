@@ -249,12 +249,12 @@ def get_cassandra_config_options():
     return [o for o in opts if p.match(o)]
     
 @fab.parallel
-def bootstrap(git_fetch=True):
+def bootstrap(git_fetch=True, revision_override=None):
     """Install and configure Cassandra on each host
     
     Returns the git id for the version checked out.
     """
-    revision = config['revision']
+    revision = revision_override or config['revision']
     partitioner = config['partitioner']
 
     fab.run('mkdir -p fab')
