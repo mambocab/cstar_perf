@@ -107,19 +107,27 @@ def bootstrap(cfg=None, destroy=False, leave_data=False, git_fetch=True):
         # Use the local username for this host, as it may be different
         # than the cluster defined 'user' parameter:
         hosts += [getpass.getuser() + "@" + localhost]
-    with cstar.fab.settings(hosts=hosts):
-        git_ids = execute(cstar.bootstrap, git_fetch=git_fetch)
+    if not cfg.get('revision_override'):
+        with cstar.fab.settings(hosts=hosts):
+            git_ids = execute(cstar.bootstrap, git_fetch=git_fetch)
+    else:
+        git_ids = []
+        for revision, hosts in cfg['revision_override'].items():
+            git_ids.extend(list(execute(cstar.bootstrap, git_fetch=git_fetch, revision_override=revision)))
 
-    git_id = list(set(git_ids.values()))
-    assert len(git_id) == 1, "Not all nodes had the same cassandra version: {git_ids}".format(git_ids=git_ids)
-    git_id = git_id[0]
+    git_id_uniques = list(set(git_ids.values()))
+    if cfg.get('revision_override'):
+        expected_revisions = len(cfg.get('revision_override'))
+    else:
+        expected_revisions = 1
+    assert len(git_id_uniques) == expected_revisions, "Unexpected number of cassandra versions: {git_ids}".format(git_ids=git_ids)
 
     execute(cstar.start)
     execute(cstar.ensure_running, hosts=[cstar.config['seeds'][0]])
     time.sleep(30)
 
-    logger.info("Started cassandra on {n} nodes with git SHA: {git_id}".format(
-        n=len(cstar.fab.env['hosts']), git_id=git_id))
+    logger.info("Started cassandra on {n} nodes with git SHAs: {git_id_uniques}".formats
+        n=len(cstar.fab.env['hosts']), git_id_uniques=git_id_uniques))
     return git_id
 
 def restart():
