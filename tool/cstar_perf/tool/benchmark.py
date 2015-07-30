@@ -20,6 +20,7 @@ import getpass
 import logging
 import yaml
 import sh
+import itertools
 
 # Import the default config first:
 import fab_cassandra as cstar
@@ -112,16 +113,16 @@ def bootstrap(cfg=None, destroy=False, leave_data=False, git_fetch=True):
             git_ids = list(execute(cstar.bootstrap, git_fetch=git_fetch).values())
     else:
         git_ids = []
-        for revision, hosts_to_override in cfg['revision_override'].items():
+        default_hosts = set(hosts) - set(itertools.chain(*cfg['revision_override'].values()))
+        print 'default version on {default_hosts}'.format(default_hosts=default_hosts)
+        with cstar.fab.settings(hosts=default_hosts):
+            git_ids.extend(list(execute(cstar.bootstrap, git_fetch=git_fetch).values()))
+        for override_revision, hosts_to_override in cfg['revision_override'].items():
+	    print '{revision} on {hosts_to_override}'.format(revision=override_revision, hosts_to_override=hosts_to_override)
             with cstar.fab.settings(hosts=hosts_to_override):
-                git_ids.extend(list(execute(cstar.bootstrap, git_fetch=git_fetch, revision_override=revision).values()))
+                git_ids.extend(list(execute(cstar.bootstrap, git_fetch=git_fetch, revision_override=override_revision).values()))
 
     git_id_uniques = list(set(git_ids))
-    if cfg.get('revision_override'):
-        expected_revisions = len(cfg.get('revision_override'))
-    else:
-        expected_revisions = 1
-    assert len(git_id_uniques) == expected_revisions, "Unexpected number of cassandra versions: {git_ids}".format(git_ids=git_ids)
 
     execute(cstar.start)
     execute(cstar.ensure_running, hosts=[cstar.config['seeds'][0]])
