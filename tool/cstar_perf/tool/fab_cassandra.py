@@ -457,10 +457,12 @@ def start():
 
     # Place environment file on host:
     env = config.get('env', '')
+    fab.puts('env is: {}'.format(env))
 
     if isinstance(env, list) or isinstance(env, tuple):
         env = "\n".join(env)
     env += "\n"
+    fab.puts('env is: {}'.format(env))
     if not config['use_jna']:
         env = 'JVM_EXTRA_OPTS=-Dcassandra.boot_without_jna=true\n\n' + env
     # Turn on GC logging:
@@ -476,6 +478,7 @@ def start():
     fab.run('mkdir -p ~/fab/scripts')
     fab.put(env_file, '~/fab/scripts/{env_script}'.format(env_script=env_script))
 
+    fab.puts('env is: {}'.format(env))
     if len(env_script) > 0:
         fab.run('echo >> ~/fab/scripts/{env_script}'.format(**locals()))
         fab.run('cat ~/fab/cassandra/conf/cassandra-env.sh >> ~/fab/scripts/{env_script}'.format(**locals()))

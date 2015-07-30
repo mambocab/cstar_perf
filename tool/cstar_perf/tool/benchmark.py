@@ -109,14 +109,14 @@ def bootstrap(cfg=None, destroy=False, leave_data=False, git_fetch=True):
         hosts += [getpass.getuser() + "@" + localhost]
     if not cfg.get('revision_override'):
         with cstar.fab.settings(hosts=hosts):
-            git_ids = execute(cstar.bootstrap, git_fetch=git_fetch)
+            git_ids = list(execute(cstar.bootstrap, git_fetch=git_fetch).values())
     else:
         git_ids = []
         for revision, hosts_to_override in cfg['revision_override'].items():
             with cstar.fab.settings(hosts=hosts_to_override):
-                git_ids.extend(list(execute(cstar.bootstrap, git_fetch=git_fetch, revision_override=revision)))
+                git_ids.extend(list(execute(cstar.bootstrap, git_fetch=git_fetch, revision_override=revision).values()))
 
-    git_id_uniques = list(set(git_ids.values()))
+    git_id_uniques = list(set(git_ids))
     if cfg.get('revision_override'):
         expected_revisions = len(cfg.get('revision_override'))
     else:
