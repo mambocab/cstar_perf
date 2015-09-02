@@ -1,0 +1,194 @@
+# Command line suggestions
+# user
+#      ops(insert=100,latest=100,point=10,range=1) 
+#      n=1B 
+# -rate threads=50 
+# -pop seq=1..1M 
+#      read-lookback=uniform(1..1M) 
+# -insert visits=fixed(100K) 
+#         revisit=uniform(1..1M)"
+
+# Variations to try:
+# Increased RF 
+# compaction strategies;
+# ASC order by
+# Different operation distributions
+
+keyspace: garbage
+
+keyspace_definition: |
+  CREATE KEYSPACE garbage WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
+
+table: compressible
+
+table_definition: |
+  CREATE TABLE compressible (
+        id uuid,
+        c0 blob,
+        c1 blob,
+        c2 blob,
+        c3 blob,
+        c4 blob,
+        c5 blob,
+        c6 blob,
+        c7 blob,
+        c8 blob,
+        c9 blob,
+        c10 blob,
+        c11 blob,
+        c12 blob,
+        c13 blob,
+        c14 blob,
+        c15 blob,
+        c16 blob,
+        c17 blob,
+        c18 blob,
+        c19 blob,
+        c20 blob,
+        c21 blob,
+        c22 blob,
+        c23 blob,
+        c24 blob,
+        c25 blob,
+        c26 blob,
+        c27 blob,
+        c28 blob,
+        c29 blob,
+        c30 blob,
+        c31 blob,
+        c32 blob,
+        c33 blob,
+        c34 blob,
+        c35 blob,
+        c36 blob,
+        c37 blob,
+        c38 blob,
+        c39 blob,
+        c40 blob,
+        c41 blob,
+        c42 blob,
+        c43 blob,
+        c44 blob,
+        c45 blob,
+        c46 blob,
+        c47 blob,
+        c48 blob,
+        c49 blob,
+        PRIMARY KEY((id), c0, c1)
+  ) 
+  WITH compaction = { 'class':'LeveledCompactionStrategy' };
+
+columnspec:
+  - name: c0
+    cluster: uniform(50..200)
+    data: gaussian(1..2B, 3)
+  - name: c1
+    cluster: uniform(50..200)
+    data: gaussian(1..2B, 3)
+  - name: c2
+    data: gaussian(1..2B, 3)
+  - name: c3
+    data: gaussian(1..2B, 3)
+  - name: c4
+    data: gaussian(1..2B, 3)
+  - name: c5
+    data: gaussian(1..2B, 3)
+  - name: c6
+    data: gaussian(1..2B, 3)
+  - name: c7
+    data: gaussian(1..2B, 3)
+  - name: c8
+    data: gaussian(1..2B, 3)
+  - name: c9
+    data: gaussian(1..2B, 3)
+  - name: c10
+    data: gaussian(1..2B, 3)
+  - name: c11
+    data: gaussian(1..2B, 3)
+  - name: c12
+    data: gaussian(1..2B, 3)
+  - name: c13
+    data: gaussian(1..2B, 3)
+  - name: c14
+    data: gaussian(1..2B, 3)
+  - name: c15
+    data: gaussian(1..2B, 3)
+  - name: c16
+    data: gaussian(1..2B, 3)
+  - name: c17
+    data: gaussian(1..2B, 3)
+  - name: c18
+    data: gaussian(1..2B, 3)
+  - name: c19
+    data: gaussian(1..2B, 3)
+  - name: c20
+    data: gaussian(1..2B, 3)
+  - name: c21
+    data: gaussian(1..2B, 3)
+  - name: c22
+    data: gaussian(1..2B, 3)
+  - name: c23
+    data: gaussian(1..2B, 3)
+  - name: c24
+    data: gaussian(1..2B, 3)
+  - name: c25
+    data: gaussian(1..2B, 3)
+  - name: c26
+    data: gaussian(1..2B, 3)
+  - name: c27
+    data: gaussian(1..2B, 3)
+  - name: c28
+    data: gaussian(1..2B, 3)
+  - name: c29
+    data: gaussian(1..2B, 3)
+  - name: c30
+    data: gaussian(1..2B, 3)
+  - name: c31
+    data: gaussian(1..2B, 3)
+  - name: c32
+    data: gaussian(1..2B, 3)
+  - name: c33
+    data: gaussian(1..2B, 3)
+  - name: c34
+    data: gaussian(1..2B, 3)
+  - name: c35
+    data: gaussian(1..2B, 3)
+  - name: c36
+    data: gaussian(1..2B, 3)
+  - name: c37
+    data: gaussian(1..2B, 3)
+  - name: c38
+    data: gaussian(1..2B, 3)
+  - name: c39
+    data: gaussian(1..2B, 3)
+  - name: c40
+    data: gaussian(1..2B, 3)
+  - name: c41
+    data: gaussian(1..2B, 3)
+  - name: c42
+    data: gaussian(1..2B, 3)
+  - name: c43
+    data: gaussian(1..2B, 3)
+  - name: c44
+    data: gaussian(1..2B, 3)
+  - name: c45
+    data: gaussian(1..2B, 3)
+  - name: c46
+    data: gaussian(1..2B, 3)
+  - name: c47
+    data: gaussian(1..2B, 3)
+  - name: c48
+    data: gaussian(1..2B, 3)
+  - name: c49
+    data: gaussian(1..2B, 3)
+
+queries:
+   point:
+      cql: select * from compressible where id = ? and c0 =? and c1 = ? LIMIT 1
+      fields: samerow             # samerow or multirow (select arguments from the same row, or randomly from all rows in the partition)
+   latest:
+      cql: select * from compressible where id = ? LIMIT 1
+      fields: samerow             # samerow or multirow (select arguments from the same row, or randomly from all rows in the partition)
+   range:
+      cql: select * from compressible where id = ? and c0 = ? and c1 > ?
+      fields: samerow            # samerow or multirow (select arguments from the same row, or randomly from all rows in the partition)

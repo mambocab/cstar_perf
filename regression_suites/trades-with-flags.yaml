@@ -1,0 +1,55 @@
+# Command line suggestions
+# user
+#      ops(insert=100,latest=100,point=10,range=1) 
+#      n=1B 
+# -rate threads=50 
+# -pop seq=1..1M 
+#      contents=SORTED 
+#      read-lookback=uniform(1..1M) 
+# -insert visits=fixed(100K) 
+#         revisit=uniform(1..1M)"
+
+# Variations to try:
+# Increased RF 
+# compaction strategies;
+# ASC order by
+# Different operation distributions
+
+keyspace: findata
+
+keyspace_definition: |
+  CREATE KEYSPACE findata WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
+
+table: trades
+
+table_definition: |
+  CREATE TABLE trades (
+        instrumentid uuid,
+        day int,
+        second int,
+        millisecond int,
+        price double ,
+        volume double,
+        flags set<int>,
+        PRIMARY KEY((instrumentid, day), second, millisecond)
+  ) 
+  WITH compaction = { 'class':'LeveledCompactionStrategy' };
+
+columnspec:
+  - name: second
+    cluster: uniform(50..200)
+  - name: millisecond
+    cluster: uniform(50..200)
+  - name: flags
+    size: exp(0..4)
+
+queries:
+   latest:
+      cql: select * from trades where instrumentid = ? and day = ? ORDER BY second DESC, millisecond DESC LIMIT 1
+      fields: samerow             # samerow or multirow (select arguments from the same row, or randomly from all rows in the partition)
+   point:
+      cql: select * from trades where instrumentid = ? and day = ? and second = ? and millisecond = ? ORDER BY second DESC, millisecond DESC LIMIT 1
+      fields: samerow             # samerow or multirow (select arguments from the same row, or randomly from all rows in the partition)
+   range:
+      cql: select * from trades where instrumentid = ? and day = ? and second > ? ORDER BY second DESC, millisecond DESC LIMIT 100
+      fields: samerow            # samerow or multirow (select arguments from the same row, or randomly from all rows in the partition)
