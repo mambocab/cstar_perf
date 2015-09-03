@@ -34,7 +34,7 @@ def create_baseline_config(title=None, revision_config_options=None):
     return config
 
 
-def compressible_profile(title='Compressible', cluster='blade_11', n='1B', threads=50, yaml=None):
+def compressible_profile(title='Compressible', cluster='blade_11', n='100M', threads=50, yaml=None):
     # use belliottsmith's stress-compressible branch for the stress executable
     config = create_baseline_config(title,
                                     revision_config_options={'stress_revision': 'belliottsmith/stress-compressible'})
@@ -59,7 +59,7 @@ def test_compressible_profile():
     compressible_profile()
 
 
-def trades_with_flags_profile(title='Trades With Flags', cluster='blade_11', n='1B', threads=50, yaml=None):
+def trades_with_flags_profile(title='Trades With Flags', cluster='blade_11', n='100M', threads=50, yaml=None):
     config = create_baseline_config(title)
     config['cluster'] = cluster
     config['operations'] = [
@@ -82,7 +82,7 @@ def test_trades_with_flags_profile():
     trades_with_flags_profile()
 
 
-def trades_profile(title='Trades', cluster='blade_11', n='1B', threads=50, yaml=None):
+def trades_profile(title='Trades', cluster='blade_11', n='100M', threads=50, yaml=None):
     config = create_baseline_config(title)
     config['cluster'] = cluster
     config['operations'] = [
