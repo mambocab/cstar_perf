@@ -56,7 +56,7 @@ def compressible_profile(title='Compressible', cluster='blade_11', n='1B', threa
 
 
 def test_compressible_profile():
-    test_compressible_profile()
+    compressible_profile()
 
 
 def trades_with_flags_profile(title='Trades With Flags', cluster='blade_11', n='1B', threads=50, yaml=None):
@@ -101,5 +101,5 @@ def trades_profile(title='Trades', cluster='blade_11', n='1B', threads=50, yaml=
     scheduler.schedule(config)
 
 
-def test_trades():
+def test_trades_profile():
     trades_profile()
