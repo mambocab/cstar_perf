@@ -44,7 +44,7 @@ def compressible_profile(title='Compressible', cluster='blade_11', n='100M', thr
          'command': 'user profile=https://raw.githubusercontent.com/mambocab/cstar_perf/belliottsmith-perf-jobs/regression_suites/compressible.yaml '
                     'ops\(insert=100,latest=100,point=10,range=1\) '
                     'n={n} -rate threads={threads} -pop seq=1..10K '
-                    'read-lookback=uniform\(1..1M\) -insert visits=fixed\(10K\) '
+                    'read-lookback=uniform\(1..10K\) -insert visits=fixed\(10K\) '
                     'revisit=uniform\(1..10K\)'.format(n=n,
                                                        threads=threads)},
     ]
@@ -67,7 +67,7 @@ def trades_with_flags_profile(title='Trades With Flags', cluster='blade_11', n='
          'command': 'user profile=https://raw.githubusercontent.com/mambocab/cstar_perf/belliottsmith-perf-jobs/regression_suites/trades-with-flags.yaml '
                     'ops\(insert=100,latest=100,point=10,range=1\) '
                     'n={n} -rate threads={threads} -pop seq=1..10K contents=SORTED '
-                    'read-lookback=uniform\(1..1M\) -insert visits=fixed\(10K\) '
+                    'read-lookback=uniform\(1..10K\) -insert visits=fixed\(10K\) '
                     'revisit=uniform\(1..10K\)'.format(n=n,
                                                        threads=threads)}
     ]
@@ -90,7 +90,7 @@ def trades_profile(title='Trades', cluster='blade_11', n='100M', threads=300, ya
          'command': 'user profile=https://raw.githubusercontent.com/mambocab/cstar_perf/belliottsmith-perf-jobs/regression_suites/trades.yaml '
                     'ops\(insert=100,latest=100,point=10,range=1\) '
                     'n={n} -rate threads={threads} -pop seq=1..10K contents=SORTED '
-                    'read-lookback=uniform\(1..1M\) -insert visits=fixed\(10K\) '
+                    'read-lookback=uniform\(1..10K\) -insert visits=fixed\(10K\) '
                     'revisit=uniform\(1..10K\)'.format(n=n,
                                                        threads=threads)}
     ]
