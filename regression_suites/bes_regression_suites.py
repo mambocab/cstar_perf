@@ -10,7 +10,7 @@ def create_baseline_config(title=None, revision_config_options=None):
     if revision_config_options is None:
         revision_config_options = {}
 
-    dev_revisions = ['apache/trunk', 'apache/trunk@{1.week.ago}', 'apache/trunk@{2.weeks.ago}']
+    dev_revisions = ['apache/trunk']
     stable = get_tagged_releases('stable')[0]
     oldstable = get_tagged_releases('oldstable')[0]
 
