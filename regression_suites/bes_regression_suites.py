@@ -34,7 +34,7 @@ def create_baseline_config(title=None, revision_config_options=None):
     return config
 
 
-def compressible_profile(title='Compressible', cluster='blade_11', n='100M', threads=50, yaml=None):
+def compressible_profile(title='Compressible', cluster='blade_11', n='100M', threads=300, yaml=None):
     # use belliottsmith's stress-compressible branch for the stress executable
     config = create_baseline_config(title,
                                     revision_config_options={'stress_revision': 'belliottsmith/stress-compressible'})
@@ -43,10 +43,10 @@ def compressible_profile(title='Compressible', cluster='blade_11', n='100M', thr
         {'operation': 'stress',
          'command': 'user profile=https://raw.githubusercontent.com/mambocab/cstar_perf/belliottsmith-perf-jobs/regression_suites/compressible.yaml '
                     'ops\(insert=100,latest=100,point=10,range=1\) '
-                    'n={n} -rate threads={threads} -pop seq=1..1M '
-                    'read-lookback=uniform\(1..1M\) -insert visits=fixed\(100K\) '
-                    'revisit=uniform\(1..1M\)'.format(n=n,
-                                                      threads=threads)},
+                    'n={n} -rate threads={threads} -pop seq=1..10K '
+                    'read-lookback=uniform\(1..1M\) -insert visits=fixed\(10K\) '
+                    'revisit=uniform\(1..10K\)'.format(n=n,
+                                                       threads=threads)},
     ]
     if yaml:
         config['yaml'] = yaml
@@ -59,17 +59,17 @@ def test_compressible_profile():
     compressible_profile()
 
 
-def trades_with_flags_profile(title='Trades With Flags', cluster='blade_11', n='100M', threads=50, yaml=None):
+def trades_with_flags_profile(title='Trades With Flags', cluster='blade_11', n='100M', threads=300, yaml=None):
     config = create_baseline_config(title)
     config['cluster'] = cluster
     config['operations'] = [
         {'operation': 'stress',
          'command': 'user profile=https://raw.githubusercontent.com/mambocab/cstar_perf/belliottsmith-perf-jobs/regression_suites/trades-with-flags.yaml '
                     'ops\(insert=100,latest=100,point=10,range=1\) '
-                    'n={n} -rate threads={threads} -pop seq=1..1M contents=SORTED '
-                    'read-lookback=uniform\(1..1M\) -insert visits=fixed\(100K\) '
-                    'revisit=uniform\(1..1M\)'.format(n=n,
-                                                      threads=threads)}
+                    'n={n} -rate threads={threads} -pop seq=1..10K contents=SORTED '
+                    'read-lookback=uniform\(1..1M\) -insert visits=fixed\(10K\) '
+                    'revisit=uniform\(1..10K\)'.format(n=n,
+                                                       threads=threads)}
     ]
     if yaml:
         config['yaml'] = yaml
@@ -82,17 +82,17 @@ def test_trades_with_flags_profile():
     trades_with_flags_profile()
 
 
-def trades_profile(title='Trades', cluster='blade_11', n='100M', threads=50, yaml=None):
+def trades_profile(title='Trades', cluster='blade_11', n='100M', threads=300, yaml=None):
     config = create_baseline_config(title)
     config['cluster'] = cluster
     config['operations'] = [
         {'operation': 'stress',
          'command': 'user profile=https://raw.githubusercontent.com/mambocab/cstar_perf/belliottsmith-perf-jobs/regression_suites/trades.yaml '
                     'ops\(insert=100,latest=100,point=10,range=1\) '
-                    'n={n} -rate threads={threads} -pop seq=1..1M contents=SORTED '
-                    'read-lookback=uniform\(1..1M\) -insert visits=fixed\(100K\) '
-                    'revisit=uniform\(1..1M\)'.format(n=n,
-                                                      threads=threads)}
+                    'n={n} -rate threads={threads} -pop seq=1..10K contents=SORTED '
+                    'read-lookback=uniform\(1..1M\) -insert visits=fixed\(10K\) '
+                    'revisit=uniform\(1..10K\)'.format(n=n,
+                                                       threads=threads)}
     ]
     if yaml:
         config['yaml'] = yaml
