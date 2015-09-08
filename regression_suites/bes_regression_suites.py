@@ -26,7 +26,7 @@ def create_baseline_config(title=None, revision_config_options=None):
         r['java_home'] = "~/fab/jvms/jdk1.7.0_71" if 'oldstable' in r['label'] else "~/fab/jvms/jdk1.8.0_45"
         r.update(revision_config_options)
 
-    config['title'] = 'Daily C* regression suite - {}'.format(datetime.datetime.now().strftime("%Y-%m-%d"))
+    config['title'] = 'C* regression suite - {}'.format(datetime.datetime.now().strftime("%Y-%m-%d"))
 
     if title is not None:
         config['title'] += ' - {title}'.format(title=title)
