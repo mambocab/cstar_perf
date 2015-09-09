@@ -88,7 +88,7 @@ def trades_profile(title='Trades', cluster='blade_11', n='100M', threads=300, ya
     config['operations'] = [
         {'operation': 'stress',
          'command': 'user profile=https://raw.githubusercontent.com/mambocab/cstar_perf/belliottsmith-perf-jobs/regression_suites/trades.yaml '
-                    'ops\(insert=100,latest=100,point=10,range=1\) '
+                    'ops\(insert=100,latest=100,range=1\) '
                     'n={n} -rate threads={threads} -pop seq=1..10K contents=SORTED '
                     'read-lookback=uniform\(1..10K\) -insert visits=fixed\(10K\) '
                     'revisit=uniform\(1..10K\)'.format(n=n,

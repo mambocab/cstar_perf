@@ -1,6 +1,6 @@
 # Command line suggestions
 # user
-#      ops(insert=100,latest=100,point=10,range=1) 
+#      ops(insert=100,latest=100,range=1) 
 #      n=1B 
 # -rate threads=50 
 # -pop seq=1..1M 
