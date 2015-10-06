@@ -374,6 +374,12 @@ def get_test_status(test_id):
     except UnknownTestError:
         return make_response(jsonify({'error':'Unknown Test {test_id}.'.format(test_id=test_id)}), 404)
 
+@app.route('/api/tests')
+def get_tests():
+    """Retrieve the UUIDs of all tests."""
+    ids = db.get_tests()
+    return jsonify({'ids': ids})
+
 @app.route('/api/clusters')
 @requires_auth('user')
 def get_clusters():

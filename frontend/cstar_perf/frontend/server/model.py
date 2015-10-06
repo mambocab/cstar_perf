@@ -80,6 +80,7 @@ class Model(object):
     statements = {
         'insert_test': "INSERT INTO tests (test_id, user, cluster, status, test_definition) VALUES (?, ?, ?, ?, ?);",
         'select_test': "SELECT * FROM tests WHERE test_id = ?;",
+        'get_test_ids': "SELECT test_id FROM tests;",
         'get_test_status': "SELECT status FROM tests WHERE test_id = ?;",
         'update_test_set_status': "UPDATE tests SET status = ? WHERE test_id = ?",
         'update_test_set_status_completed': "UPDATE tests SET status = ?, completed_date = ? WHERE test_id = ?",
@@ -213,6 +214,10 @@ class Model(object):
             raise UnknownTestError('Unknown test {test_id}'.format(test_id=test_id))
         test = self.__test_row_to_dict(test)
         return test
+
+    def get_tests(self):
+        session = self.get_session()
+        return [str(row.test_id) for row in session.execute(self.__prepared_statements['get_test_ids'], ())]
 
     def get_test_status(self, test_id):
         session = self.get_session()
