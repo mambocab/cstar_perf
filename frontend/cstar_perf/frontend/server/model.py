@@ -46,6 +46,7 @@ import datetime
 import zmq
 from collections import namedtuple
 import base64
+import time
 
 from flask.ext.scrypt import generate_password_hash, generate_random_salt, check_password_hash
 
@@ -148,19 +149,34 @@ class Model(object):
         log.info("Model initialized")
 
     def get_session(self, shared=True):
-        try:
-            if shared:
+        refreshed = False
+        time.sleep(30)
+        for find_ks_attempt in range(5):
+            for attempt in range(5):
+                if refreshed:
+                    break
                 try:
-                    session = self.__shared_session
-                except AttributeError:
-                    session = self.cluster.connect(self.keyspace)
-            else:
-                session = cluster.connect(self.keyspace)
-        except cassandra.InvalidRequest, e:
-            # Only attempt to create the schema if we get an error that it
-            # doesn't exist:
-            if "Keyspace '{ks}' does not exist".format(ks=self.keyspace) in e.message:
-                self.__create_schema()
+                    log.info('attempt #{attempt} to refresh metadata'.format(attempt=attempt))
+                    self.cluster.refresh_schema_metadata()
+                    refreshed = True
+                except:
+                    time.sleep(5)
+            log.info('keyspaces:')
+            log.info(self.cluster.metadata.keyspaces)
+            if self.cluster.metadata.keyspaces:
+                log.info('found a keyspace. breaking.')
+                break
+
+        if self.keyspace not in self.cluster.metadata.keyspaces:
+            log.info('{} not found in keyspaces; attempting to create schema'.format(self.keyspace))
+            self.__create_schema()
+        if shared:
+            try:
+                session = self.__shared_session
+            except AttributeError:
+                log.info('__shared_session not initialized yet, attempting connection')
+                session = self.cluster.connect(self.keyspace)
+        else:
             session = self.cluster.connect(self.keyspace)
         return session
                     
