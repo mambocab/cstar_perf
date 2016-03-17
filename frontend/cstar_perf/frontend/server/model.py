@@ -123,7 +123,7 @@ class Model(object):
         'insert_api_pubkey': "INSERT INTO api_pubkeys (name, user_type, pubkey) VALUES (?, ?, ?);"
     }
 
-    def __init__(self, cluster=Cluster(['127.0.0.1']), keyspace='cstar_perf', email_notifications=False):
+    def __init__(self, cluster=None, keyspace='cstar_perf', email_notifications=False):
         """Instantiate DB model object for interacting with the C* backend.
 
         cluster - Python driver object for accessing Cassandra
@@ -131,7 +131,8 @@ class Model(object):
         email_notifications - if True, perform email notifications for some actions. Defaults to False.
         """
         log.info("Initializing Model...")
-        self.cluster = cluster if type(cluster) == Cluster else Cluster(cluster)
+        if cluster is None:
+            self.cluster = Cluster(['127.0.0.1'])
         self.keyspace = keyspace
         self.email_notifications = email_notifications
         self.__shared_session = self.get_session()
@@ -151,7 +152,7 @@ class Model(object):
     def get_session(self, shared=True):
         refreshed = False
         time.sleep(30)
-        for find_ks_attempt in range(5):
+        for find_ks_attempt in range(30):
             for attempt in range(5):
                 if refreshed:
                     break
@@ -159,13 +160,17 @@ class Model(object):
                     log.info('attempt #{attempt} to refresh metadata'.format(attempt=attempt))
                     self.cluster.refresh_schema_metadata()
                     refreshed = True
-                except:
+                except Exception, e:
+                    log.info('raised {}. sleeping and trying again.'.format(e))
                     time.sleep(5)
             log.info('keyspaces:')
             log.info(self.cluster.metadata.keyspaces)
             if self.cluster.metadata.keyspaces:
                 log.info('found a keyspace. breaking.')
                 break
+
+        if not refreshed:
+            raise RuntimeError("Couldn't refresh the metadata to check the schema. WTF?")
 
         if self.keyspace not in self.cluster.metadata.keyspaces:
             log.info('{} not found in keyspaces; attempting to create schema'.format(self.keyspace))
