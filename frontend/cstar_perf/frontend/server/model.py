@@ -150,6 +150,10 @@ class Model(object):
         log.info("Model initialized")
 
     def get_session(self, shared=True):
+        log.info('Can we connect?')
+        self.cluster.connect(self.keyspace)
+        log.info('Yep.')
+
         refreshed = False
         time.sleep(30)
         for find_ks_attempt in range(30):
