@@ -131,8 +131,7 @@ class Model(object):
         email_notifications - if True, perform email notifications for some actions. Defaults to False.
         """
         log.info("Initializing Model...")
-        if cluster is None:
-            self.cluster = Cluster(['127.0.0.1'])
+        self.cluster = cluster if cluster is not None else Cluster(['127.0.0.1'])
         self.keyspace = keyspace
         self.email_notifications = email_notifications
         self.__shared_session = self.get_session()
@@ -151,15 +150,14 @@ class Model(object):
 
     def get_session(self, shared=True):
         log.info('Can we connect?')
-        self.cluster.connect(self.keyspace)
+        self.cluster.connect()
         log.info('Yep.')
 
         refreshed = False
-        time.sleep(30)
         for find_ks_attempt in range(30):
             for attempt in range(5):
                 if refreshed:
-                    break
+                    continue
                 try:
                     log.info('attempt #{attempt} to refresh metadata'.format(attempt=attempt))
                     self.cluster.refresh_schema_metadata()
@@ -171,7 +169,7 @@ class Model(object):
             log.info(self.cluster.metadata.keyspaces)
             if self.cluster.metadata.keyspaces:
                 log.info('found a keyspace. breaking.')
-                break
+                continue
 
         if not refreshed:
             raise RuntimeError("Couldn't refresh the metadata to check the schema. WTF?")
